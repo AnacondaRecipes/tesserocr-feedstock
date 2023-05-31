@@ -12,8 +12,8 @@ source:
 
 build:
   number: 0
-  # Skip s390x because of missing leptonica.
-  skip: True  # [s390x]
+  # Skip s390x and win64 because of missing leptonica and tesseract
+  skip: True  # [s390x or win64]
 
 requirements:
   build:
@@ -29,7 +29,7 @@ requirements:
     - pip
   run:
     - {{ pin_compatible('tesseract', max_pin='x.x') }}
-    - leptonica >=1.7.1 # [not win]
+    - leptonica >=1.7.1
     - pillow
     - python
 
