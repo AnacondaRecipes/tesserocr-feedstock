@@ -1,5 +1,5 @@
 {% set name = "tesserocr" %}
-{% set version = "2.5.2" %}
+{% set version = "2.6.0" %}
 
 package:
   name: {{ name|lower }}
@@ -8,30 +8,30 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 9371dd3f6fe3238039c73bfe15bcaf21389f7e75f62bd530a30110149f39b2ae
+  sha256: 77430d272b53dacd3bdd4af5d563fdc24ae51b86fdbc9cf2e8146f29c7abc9a4
 
 build:
-  number: 4
-  skip: true  # [win and py==27]
+  number: 0
+  # Skip s390x because of missing leptonica.
+  skip: True  # [s390x]
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - cython                                 # [build_platform != target_platform]
-    - pkg-config
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - pkg-config 0.29.2
   host:
-    - tesseract
-    - cython
+    - tesseract 5.2.0
+    - cython 0.29.33
+    - setuptools
     - python
+    - wheel
     - pip
   run:
-    - python
     - {{ pin_compatible('tesseract', max_pin='x.x') }}
-    - leptonica  # [not win]
+    - leptonica >=1.7.1 # [not win]
     - pillow
+    - python
 
 test:
   imports:
@@ -43,6 +43,11 @@ about:
   license_family: MIT
   license_file: LICENSE
   summary: A simple, Pillow-friendly, Python wrapper around tesseract-ocr API using Cython
+  description: |
+    tesserocr integrates directly with Tesseract's C++ API using Cython which
+    allows for a simple Pythonic and easy-to-read source code. It enables real
+    concurrent execution when used with Python's threading module by releasing
+    the GIL while processing an image in tesseract.
   doc_url: https://github.com/sirfz/tesserocr
   dev_url: https://github.com/sirfz/tesserocr
 
