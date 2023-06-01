@@ -29,7 +29,7 @@ requirements:
     - pip
   run:
     - {{ pin_compatible('tesseract', max_pin='x.x') }}
-    - leptonica >=1.7.1
+    - leptonica >=1.71
     - pillow
     - python
 
@@ -38,8 +38,15 @@ test:
     - tesserocr
   requires:
     - pip
+    - pytest
+  source_files:
+    - tests
   commands:
     - pip check
+    # Two tests are currently failing, and don't have fixes according to the latest upstream.
+    # https://github.com/sirfz/tesserocr/issues/295
+    # https://github.com/sirfz/tesserocr/issues/100
+    - pytest tests -k 'not (test_LSTM_choices or test_init)'
 
 about:
   home: https://github.com/sirfz/tesserocr
