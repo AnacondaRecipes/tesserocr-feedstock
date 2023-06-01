@@ -44,9 +44,9 @@ test:
   commands:
     - pip check
     # Two tests are currently failing, and don't have fixes according to the latest upstream.
-    # https://github.com/sirfz/tesserocr/issues/295
-    # https://github.com/sirfz/tesserocr/issues/100
-    - pytest tests -k 'not (test_LSTM_choices or test_init)'
+    # https://github.com/sirfz/tesserocr/issues/295 (test_detect_os and test_LSTM_choices)
+    # https://github.com/sirfz/tesserocr/issues/100 (test_init)
+    - pytest tests -k 'not (test_LSTM_choices or test_init or test_detect_os)'
 
 about:
   home: https://github.com/sirfz/tesserocr
